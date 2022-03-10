@@ -17,13 +17,13 @@ users_name = {
     },
 }
 
-@user.get('/api/users/')
+@user.get('/')
 def get_users():
     users = [user for _, user in users_name.items()]
     return jsonify(users)
 
 
-@user.get('/api/users/<uid>')
+@user.get('<uid>')
 def get_user_id(uid):
     user = users_name.get(uid)
     if not user:
@@ -31,14 +31,14 @@ def get_user_id(uid):
 
     return user
 
-@user.post('/api/users/')
+@user.post('/')
 def add_user():
     user = request.json
     user['uid'] = uuid4().hex
     users_name[user['uid']] = user
     return user, HTTPStatus.CREATED
 
-@user.put('/api/users/<uid>')
+@user.put('<uid>')
 def update_user(uid):
     if uid not in users_name:
         return {"message": "user not found"}, HTTPStatus.NOT_FOUND
@@ -48,7 +48,7 @@ def update_user(uid):
     users_name[uid] = user
     return user, HTTPStatus.OK
 
-@user.delete('/api/users/<uid>')
+@user.delete('<uid>')
 def delete_user(uid):
     if uid not in users_name:
         return {"message":"user not found"}, HTTPStatus.NOT_FOUND
