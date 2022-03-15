@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Else
-settings.py
+# key to valentinа studio
+backend/settings.py
