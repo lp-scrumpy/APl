@@ -1,7 +1,12 @@
 from http import HTTPStatus
-from flask import Flask, jsonify, request, Blueprint
 from uuid import uuid4
 
+import werkzeug
+from flask import Flask, Blueprint, jsonify, request
+from pydantic import ValidationError
+from werkzeug.exceptions import BadRequest
+
+from backend.schemas import UserSchema
 
 user = Blueprint('user', __name__)
 
@@ -33,20 +38,32 @@ def get_user_id(uid):
 
 @user.post('/')
 def add_user():
-    user = request.json
-    user['uid'] = uuid4().hex
+    try:
+        user = request.json
+        user['uid'] = uuid4().hex
+        new_user = UserSchema(**user)
+    except ValidationError as e:
+        return e.json(), HTTPStatus.BAD_REQUEST
+    except werkzeug.exceptions.BadRequest:
+        return {"message": "incorrect data"}, HTTPStatus.BAD_REQUEST
     users_name[user['uid']] = user
-    return user, HTTPStatus.CREATED
+
+    return new_user.dict(), HTTPStatus.CREATED
 
 @user.put('<uid>')
 def update_user(uid):
     if uid not in users_name:
         return {"message": "user not found"}, HTTPStatus.NOT_FOUND
-
-    user = request.json
+    try:
+        uid = request.json
+        new_uid = UserSchema(**uid)
+    except ValidationError as e:
+        return e.json(), HTTPStatus.BAD_REQUEST
+    except werkzeug.exceptions.BadRequest:
+         return {'message': 'incorrect data'}, HTTPStatus.BAD_REQUEST
 
     users_name[uid] = user
-    return user, HTTPStatus.OK
+    return new_uid.dict(), HTTPStatus.OK
 
 @user.delete('<uid>')
 def delete_user(uid):
