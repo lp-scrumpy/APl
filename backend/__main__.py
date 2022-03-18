@@ -1,6 +1,6 @@
 import logging
 from flask import Flask
-from backend.users import user
+from backend.views.users import user
 
 logger = logging.getLogger(__name__)
 
