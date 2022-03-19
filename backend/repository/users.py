@@ -1,4 +1,7 @@
+from sqlalchemy.exc import IntegrityError
+
 from backend.db import db_session
+from backend.errors import NotFoundError, ConflictError
 from backend.models import User
 
 
@@ -6,29 +9,38 @@ class AddUser:
     name = 'user'
 
     def add(self, username: str) -> User:
-        new_user = User(username=username)
-        db_session.add(new_user)
-        db_session.commit()
+        try:
+            new_user = User(username=username)
+            db_session.add(new_user)
+            db_session.commit()
+        except IntegrityError:
+            raise ConflictError(self.name)
         return new_user
 
-    def get_all(self) -> User:
+    def get_all(self) -> list[User]:
         return User.query.all()
 
     def get_by_id(self, uid: int) -> User:
         user = User.query.filter(User.uid == uid).first()
+        if not user: 
+            raise NotFoundError(self.name)
         return user
 
     def update(self, uid: int, new_name: str) -> User:
         user = User.query.filter(User.uid == uid).first()
-        user.username = new_name
-        db_session.commit()
-        return user 
+        if not user:
+            raise NotFoundError(self.name)
+        try:
+            user.username = new_name
+            db_session.commit()
+        except IntegrityError:
+            raise ConflictError(self.name)
+        return user
 
     def delete(self, uid: int) -> None:
         user = User.query.filter(User.uid == uid).first()
+        if not user: 
+            raise NotFoundError(self.name)
         db_session.delete(user)
         db_session.commit()
-        return user
-
-
-
+        
