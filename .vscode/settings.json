@@ -10,5 +10,7 @@
         ".venv": true,
         "*.pyc": true,
         "**/__pycache__": true
-    }
+    },
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true
 }
