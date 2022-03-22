@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "backend-2"
+version = "0.1.0"
+description = ""
+authors = ["yankovskaya <yankovskaya.my@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.0.3"
+flake8 = "^4.0.1"
+SQLAlchemy = "^1.4.32"
+pydantic = "^1.9.0"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.941"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
