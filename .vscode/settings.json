@@ -1,4 +1,9 @@
-{
+{   
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "editor.rulers": [99],
+    
     "search.exclude": {
         ".gitignore": true,
         ".venv": true,
@@ -11,6 +16,4 @@
         "*.pyc": true,
         "**/__pycache__": true
     },
-    "python.linting.mypyEnabled": true,
-    "python.linting.enabled": true
 }
