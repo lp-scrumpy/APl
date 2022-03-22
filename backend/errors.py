@@ -1,10 +1,12 @@
 from http import HTTPStatus
 
+
 class AppError(Exception):
     def __init__(self, reason: str, status: HTTPStatus):
         super().__init__(f'[{status}] {reason}')
         self.reason = reason
         self.status = status
+
 
 class ConflictError(AppError):
     def __init__(self, entity: str):
