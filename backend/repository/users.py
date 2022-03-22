@@ -22,7 +22,7 @@ class AddUser:
 
     def get_by_id(self, uid: int) -> User:
         user = User.query.filter(User.uid == uid).first()
-        if not user: 
+        if not user:
             raise NotFoundError(self.name)
         return user
 
@@ -39,8 +39,7 @@ class AddUser:
 
     def delete(self, uid: int) -> None:
         user = User.query.filter(User.uid == uid).first()
-        if not user: 
+        if not user:
             raise NotFoundError(self.name)
         db_session.delete(user)
         db_session.commit()
-        

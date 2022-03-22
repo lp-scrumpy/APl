@@ -9,6 +9,7 @@ user = Blueprint('user', __name__)
 
 add_user = AddUser()
 
+
 @user.get('/')
 def get_users():
     entities = add_user.get_all()
@@ -22,6 +23,7 @@ def get_user_id(uid):
     user_found = schemas.UserSchema.from_orm(entity)
     return user_found.dict(), HTTPStatus.OK
 
+
 @user.post('/')
 def add_users():
     user_info = request.json
@@ -32,6 +34,7 @@ def add_users():
 
     return added_user.dict(), HTTPStatus.CREATED
 
+
 @user.put('/<uid>')
 def update_user(uid):
     user_info = request.json
@@ -41,6 +44,7 @@ def update_user(uid):
     update_user = schemas.UserSchema.from_orm(entity)
 
     return update_user.dict(), HTTPStatus.OK
+
 
 @user.delete('/<uid>')
 def delete_user(uid):
