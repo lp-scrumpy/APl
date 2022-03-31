@@ -1,36 +1,35 @@
 from http import HTTPStatus
 
 from backend import schemas
-from backend.repository.users import AddUser
+from backend.repository.users import UserRepo
 from flask import Blueprint, jsonify, request
-from backend import schemas
 
 user = Blueprint('user', __name__)
 
-add_user = AddUser()
+add_user = UserRepo()
 
 
 @user.get('/')
 def get_users():
     entities = add_user.get_all()
-    users = [schemas.UserSchema.from_orm(entity).dict() for entity in entities]
+    users = [schemas.User.from_orm(entity).dict() for entity in entities]
     return jsonify(users), HTTPStatus.OK
 
 
 @user.get('/<uid>')
 def get_user_id(uid):
     entity = add_user.get_by_id(uid)
-    user_found = schemas.UserSchema.from_orm(entity)
+    user_found = schemas.User.from_orm(entity)
     return user_found.dict(), HTTPStatus.OK
 
 
 @user.post('/')
 def add_users():
     user_info = request.json
-    user_info = schemas.UserSchema(**user_info)
+    user_info = schemas.User(**user_info)
 
     entity = add_user.add(user_info.username)
-    added_user = schemas.UserSchema.from_orm(entity)
+    added_user = schemas.User.from_orm(entity)
 
     return added_user.dict(), HTTPStatus.CREATED
 
@@ -38,10 +37,10 @@ def add_users():
 @user.put('/<uid>')
 def update_user(uid):
     user_info = request.json
-    user_info = schemas.UserSchema(**user_info)
+    user_info = schemas.User(**user_info)
 
     entity = add_user.update(uid, user_info.username)
-    update_user = schemas.UserSchema.from_orm(entity)
+    update_user = schemas.User.from_orm(entity)
 
     return update_user.dict(), HTTPStatus.OK
 
