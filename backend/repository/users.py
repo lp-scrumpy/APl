@@ -5,7 +5,7 @@ from backend.errors import NotFoundError, ConflictError
 from backend.models import User
 
 
-class AddUser:
+class UserRepo:
     name = 'user'
 
     def add(self, username: str) -> User:

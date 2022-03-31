@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, Field
 
 
@@ -15,3 +16,4 @@ class User(Schema):
 class Plan(Schema):
     uid: str
     name: str = Field(min_length=1, max_length=15)
+    date: datetime

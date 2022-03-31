@@ -1,12 +1,12 @@
 from http import HTTPStatus
 
 from backend import schemas
-from backend.repository.users import AddUser
+from backend.repository.users import UserRepo
 from flask import Blueprint, jsonify, request
 
 user = Blueprint('user', __name__)
 
-add_user = AddUser()
+add_user = UserRepo()
 
 
 @user.get('/')
