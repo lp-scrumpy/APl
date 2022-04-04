@@ -1,3 +1,4 @@
+import orjson
 from http import HTTPStatus
 
 from backend import schemas
@@ -17,7 +18,7 @@ def new_plan():
     entity = add_plan.add(plan_info.name, plan_info.date)
     added_plan = schemas.Plan.from_orm(entity)
 
-    return added_plan.dict(), HTTPStatus.CREATED
+    return orjson.dumps(added_plan.dict()), HTTPStatus.CREATED
 
 
 @planning.get('/')
