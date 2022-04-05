@@ -28,7 +28,7 @@ def get_plans():
     return jsonify(plans), HTTPStatus.OK
 
 
-@planning.get('/<planning_id>/tasks')
+@planning.get('/<planning_id>/tasks/')
 def get_tasks(planning_id):
     entities = add_plan.get_all_tasks(planning_id)
     tasks = [schemas.Task.from_orm(entity).dict() for entity in entities]
@@ -42,8 +42,8 @@ def get_task_by_id(planning_id, task_id):
     return task_found.dict(), HTTPStatus.OK
 
 
-@planning.post('/<planning_id>/tasks')
-def add_task():
+@planning.post('/<planning_id>/tasks/')
+def add_task(planning_id):
     task_info = request.json
     task_info['uid'] = -1
     task_info = schemas.Task(**task_info)
