@@ -17,3 +17,9 @@ class Plan(Schema):
     uid: str
     name: str = Field(min_length=0, max_length=15)
     date: datetime
+
+
+class Task(Schema):
+    uid: str
+    planning_id: str
+    name: str
