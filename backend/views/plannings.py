@@ -52,3 +52,16 @@ def add_task(planning_id):
     added_task = schemas.Task.from_orm(entity)
 
     return added_task.dict(), HTTPStatus.CREATED
+
+
+@planning.patch('/<planning_id>/tasks/<task_id>')
+def patch_id(task_id, planning_id):
+    task_info = request.json
+    task_info['uid'] = task_id
+    task_info['planning_id'] = planning_id
+    task_info = schemas.Task(**task_info)
+
+    entity = add_plan.patch(task_info.name, task_info.uid, task_info.planning_id)
+    patch_task = schemas.Task.from_orm(entity)
+
+    return patch_task.dict(), HTTPStatus.OK
