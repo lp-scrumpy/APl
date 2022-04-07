@@ -30,9 +30,10 @@ class Task(Base):
     uid = Column(Integer, primary_key=True)
     planning_id = Column(Integer, ForeignKey('plannings.uid'))
     name = Column(String)
+    score = Column(Integer)
 
     def __repr__(self):
-        return f'<Task {self.uid} {self.planning_id} {self.task_name}>'
+        return f'<Task {self.uid} {self.planning_id} {self.task_name} {self.score}>'
 
 
 class Planning(Base):
