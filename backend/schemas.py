@@ -10,7 +10,8 @@ class Schema(BaseModel):
 
 class User(Schema):
     uid: str
-    username: str = Field(min_length=1, max_length=15)
+    planning_id: str
+    name: str
 
 
 class Plan(Schema):
@@ -23,3 +24,10 @@ class Task(Schema):
     uid: str
     planning_id: str
     name: str
+
+
+class Estimate(Schema):
+    uid: str
+    storypoint: str
+    user_id: str
+    task_id: str
