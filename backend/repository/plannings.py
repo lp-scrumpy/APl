@@ -42,18 +42,3 @@ class PlanningRepo:
         if not task:
             raise NotFoundError(self.name)
         return task
-
-    def patch(self, name: str, task_id: str, planning_id: str) -> Task:
-        task = Task.query.filter(
-            Task.uid == task_id,
-            Task.planning_id == planning_id
-        ).first()
-        if not task:
-            raise NotFoundError(self.name)
-        try:
-            task.name = name
-            db_session.commit()
-        except IntegrityError:
-            raise ConflictError(self.name)
-
-        return task
