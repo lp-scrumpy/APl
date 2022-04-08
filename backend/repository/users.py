@@ -43,3 +43,25 @@ class UserRepo:
             raise NotFoundError(self.name)
         db_session.delete(user)
         db_session.commit()
+
+    def add_users(self, planning_id: int, name: str) -> User:
+        try:
+            new_user = User(name=name, planning_id=planning_id)
+            db_session.add(new_user)
+            db_session.commit()
+        except IntegrityError:
+            raise ConflictError(self.name)
+        return new_user
+
+    def get_all_users(self, planning_id: int) -> list[User]:
+        users = User.query.filter(User.planning_id == planning_id)
+        return users
+
+    def get_user_by_id(self, planning_id: int, user_id: int) -> User:
+        user = User.query.filter(
+            User.planning_id == planning_id,
+            User.uid == user_id
+        ).first()
+        if not user:
+            raise NotFoundError(self.name)
+        return user

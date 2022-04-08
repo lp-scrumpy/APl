@@ -24,3 +24,25 @@ class TaskRepo:
             raise ConflictError(self.name)
 
         return task
+
+    def add_tasks(self, planning_id: int, name: str) -> Task:
+        try:
+            new_task = Task(name=name, planning_id=planning_id)
+            db_session.add(new_task)
+            db_session.commit()
+        except IntegrityError:
+            raise ConflictError(self.name)
+        return new_task
+
+    def get_all_tasks(self, planning_id: int) -> list[Task]:
+        tasks = Task.query.filter(Task.planning_id == planning_id)
+        return tasks
+
+    def get_by_id(self, planning_id: int, task_id: int) -> Task:
+        task = Task.query.filter(
+            Task.planning_id == planning_id,
+            Task.uid == task_id
+        ).first()
+        if not task:
+            raise NotFoundError(self.name)
+        return task
