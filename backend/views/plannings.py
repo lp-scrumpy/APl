@@ -31,6 +31,35 @@ def get_plans():
     return jsonify(plans), HTTPStatus.OK
 
 
+@planning.post('/<planning_id>/users/')
+def add_user(planning_id):
+    task_info = request.json
+    task_info['uid'] = -1
+    task_info = schemas.User(**task_info)
+
+    entity = plan_repo.add_users(
+        task_info.planning_id,
+        task_info.name
+    )
+    added_user = schemas.User.from_orm(entity)
+
+    return added_user.dict(), HTTPStatus.CREATED
+
+
+@planning.get('/<planning_id>/users/')
+def get_users(planning_id):
+    entities = plan_repo.get_all_users(planning_id)
+    users = [schemas.User.from_orm(entity).dict() for entity in entities]
+    return jsonify(users), HTTPStatus.OK
+
+
+@planning.get('/<planning_id>/users/<user_id>')
+def get_user_id(planning_id, user_id):
+    entity = plan_repo.get_user_by_id(planning_id, user_id)
+    user_found = schemas.User.from_orm(entity)
+    return user_found.dict(), HTTPStatus.OK
+
+
 @planning.get('/<planning_id>/tasks/')
 def get_tasks(planning_id):
     entities = plan_repo.get_all_tasks(planning_id)
@@ -78,3 +107,26 @@ def set_task_score(task_id: int, planning_id: int):
     patch_task = schemas.Task.from_orm(entity)
 
     return patch_task.dict(), HTTPStatus.OK
+
+
+@planning.post('/<planning_id>/tasks/<task_id>/estimates/')
+def add_estimates(planning_id, task_id):
+    estimate_info = request.json
+    estimate_info['uid'] = -1
+    estimate_info = schemas.Estimate(**estimate_info)
+
+    entity = plan_repo.add_estimate(
+        estimate_info.user_id,
+        estimate_info.storypoint,
+        estimate_info.task_id
+    )
+    added_estimate = schemas.Estimate.from_orm(entity)
+
+    return added_estimate.dict(), HTTPStatus.CREATED
+
+
+@planning.get('/<planning_id>/tasks/<task_id>/estimates/')
+def get_estimates(planning_id, task_id):
+    entities = plan_repo.get_all_estimates(task_id)
+    estimates = [schemas.Estimate.from_orm(entity).dict() for entity in entities]
+    return jsonify(estimates), HTTPStatus.OK
