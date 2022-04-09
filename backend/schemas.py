@@ -10,7 +10,6 @@ class Schema(BaseModel):
 
 class User(Schema):
     uid: int
-    planning_id: int
     name: str
 
 
@@ -22,7 +21,6 @@ class Plan(Schema):
 
 class Task(Schema):
     uid: int
-    planning_id: int
     name: str
 
 
@@ -30,4 +28,3 @@ class Estimate(Schema):
     uid: int
     storypoint: int
     user_id: int
-    task_id: int

@@ -8,10 +8,9 @@ from backend.models import Task
 class TaskRepo:
     name = 'tasks'
 
-    def set_score(self, task_id: int, planning_id: int, score: int) -> Task:
+    def set_score(self, task_id: int, score: int) -> Task:
         task = Task.query.filter(
             Task.uid == task_id,
-            Task.planning_id == planning_id
         ).first()
 
         if not task:
@@ -38,9 +37,8 @@ class TaskRepo:
         tasks = Task.query.filter(Task.planning_id == planning_id)
         return tasks
 
-    def get_by_id(self, planning_id: int, task_id: int) -> Task:
+    def get_by_id(self, task_id: int) -> Task:
         task = Task.query.filter(
-            Task.planning_id == planning_id,
             Task.uid == task_id
         ).first()
         if not task:

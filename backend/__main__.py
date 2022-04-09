@@ -8,6 +8,7 @@ from werkzeug.exceptions import HTTPException
 from backend.errors import AppError
 from backend.views.users import user
 from backend.views.plannings import planning
+from backend.views.tasks import task_view
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ def main():
     app = Flask(__name__)
     app.register_blueprint(user, url_prefix='/api/v1/users')
     app.register_blueprint(planning, url_prefix='/api/v1/plannings')
+    app.register_blueprint(task_view, url_prefix='/api/v1/tasks')
     app.run(host='0.0.0.0', port=8080, debug=False)
 
 
