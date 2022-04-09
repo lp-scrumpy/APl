@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
 from backend.db import Base, engine
 from sqlalchemy.orm import relationship
 
@@ -20,6 +20,10 @@ class User(Base):
     planning_id = Column(Integer, ForeignKey('plannings.uid'))
     name = Column(String)
     children = relationship("Estimate")
+
+    __table_args__ = (
+        UniqueConstraint(name, planning_id),
+    )
 
     def __repr__(self):
         return f'<User {self.uid} {self.planning_id} {self.user_name}>'
