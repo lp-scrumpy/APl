@@ -16,15 +16,15 @@ user_repo = UserRepo()
 estimate_repo = EstimateRepo()
 
 
-@task_view.get('/<task_id>')
-def get_task_by_id(task_id):
+@task_view.get('/<int:task_id>')
+def get_task_by_id(planning_id: int, task_id: int):
     entity = task_repo.get_by_id(task_id)
     task_found = schemas.Task.from_orm(entity)
     return task_found.dict(), HTTPStatus.OK
 
 
 @task_view.patch('/<int:task_id>')
-def set_task_score(task_id: int):
+def set_task_score(planning_id: int, task_id: int):
     payload = request.json
     if not payload:
         abort(400, 'Empty payload')
@@ -43,7 +43,7 @@ def set_task_score(task_id: int):
 
 
 @task_view.post('/<int:task_id>/estimates/')
-def add_estimates(task_id: int):
+def add_estimates(planning_id: int, task_id: int):
     estimate_info = request.json
     if not estimate_info:
         abort(400, 'estimate not found')
@@ -60,8 +60,8 @@ def add_estimates(task_id: int):
     return added_estimate.dict(), HTTPStatus.CREATED
 
 
-@task_view.get('/<task_id>/estimates/')
-def get_estimates(task_id):
+@task_view.get('/<int:task_id>/estimates/')
+def get_estimates(planning_id: int, task_id: int):
     entities = estimate_repo.get_all_estimates(task_id)
     estimates = [schemas.Estimate.from_orm(entity).dict() for entity in entities]
     return jsonify(estimates), HTTPStatus.OK

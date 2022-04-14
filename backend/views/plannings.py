@@ -8,8 +8,10 @@ from backend.repository.estimates import EstimateRepo
 from backend.repository.plannings import PlanningRepo
 from backend.repository.tasks import TaskRepo
 from backend.repository.users import UserRepo
+from backend.views.tasks import task_view
 
 planning = Blueprint('plan', __name__)
+planning.register_blueprint(task_view, url_prefix='/<int:planning_id>/tasks')
 
 plan_repo = PlanningRepo()
 task_repo = TaskRepo()
