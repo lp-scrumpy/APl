@@ -1,10 +1,10 @@
 import logging
 from http import HTTPStatus
-
 from flask import Flask
 from pydantic import ValidationError
 from werkzeug.exceptions import HTTPException
 
+from backend.db import db_session
 from backend.errors import AppError
 from backend.views.users import user
 from backend.views.plannings import planning
@@ -25,6 +25,10 @@ def handle_validation_error(error: ValidationError):
     return error.json(), HTTPStatus.BAD_REQUEST
 
 
+def shutdown_session(exception=None):
+    db_session.remove()
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
     logger.info("application started")
@@ -33,6 +37,8 @@ def main():
     app.register_blueprint(planning, url_prefix='/api/v1/plannings')
     app.register_blueprint(task_view, url_prefix='/api/v1/tasks')
     app.run(host='0.0.0.0', port=8080, debug=False)
+
+    app.teardown_appcontext(shutdown_session)
 
 
 if __name__ == '__main__':
