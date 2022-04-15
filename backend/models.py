@@ -1,14 +1,20 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
-from backend.db import Base, engine
+from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String,
+                        UniqueConstraint)
 from sqlalchemy.orm import relationship
+
+from backend.db import Base, engine
 
 
 class Estimate(Base):
     __tablename__ = 'estimates'
     uid = Column(Integer, primary_key=True)
-    storypoint = Column(String)
+    storypoint = Column(String, nullable=True)
     user_id = Column(Integer, ForeignKey('users.uid'))
     task_id = Column(Integer, ForeignKey('tasks.uid'))
+
+    __tableargs__ = (
+        UniqueConstraint(task_id, user_id),
+    )
 
     def __repr__(self):
         return f'<Estimate {self.uid} {self.meaning} {self.user_id} {self.task_id}>'
