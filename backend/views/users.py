@@ -1,8 +1,9 @@
 from http import HTTPStatus
 
+from flask import Blueprint, jsonify, request
+
 from backend import schemas
 from backend.repository.users import UserRepo
-from flask import Blueprint, jsonify, request
 
 user = Blueprint('user', __name__)
 

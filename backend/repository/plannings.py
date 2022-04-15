@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
 from backend.db import db_session
-from backend.errors import ConflictError
+from backend.errors import ConflictError, NotFoundError
 from backend.models import Planning
 
 
@@ -21,3 +21,10 @@ class PlanningRepo:
 
     def get_all(self) -> list[Planning]:
         return Planning.query.all()
+
+    def get_by_id(self, planning_id: int) -> Planning:
+        entity = Planning.query.get(planning_id)
+        if not entity:
+            raise NotFoundError('planning')
+
+        return entity

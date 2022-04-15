@@ -31,6 +31,14 @@ def new_plan():
     return orjson.dumps(added_plan.dict()), HTTPStatus.CREATED
 
 
+@planning.get('/<int:planning_id>')
+def get_by_id(planning_id: int):
+    entity = plan_repo.get_by_id(planning_id)
+    plan = schemas.Plan.from_orm(entity)
+
+    return orjson.dumps(plan.dict()), HTTPStatus.OK
+
+
 @planning.get('/')
 def get_plans():
     entities = plan_repo.get_all()
@@ -42,7 +50,7 @@ def get_plans():
 def add_user(planning_id: int):
     task_info = request.json
     if not task_info:
-        abort(400, 'task info required')
+        abort(HTTPStatus.BAD_REQUEST, 'task info required')
     task_info['uid'] = -1
     task_info = schemas.User(**task_info)
 
@@ -80,7 +88,7 @@ def get_tasks(planning_id):
 def add_task(planning_id: int):
     task_info = request.json
     if not task_info:
-        abort(400, 'task info required')
+        abort(HTTPStatus.BAD_REQUEST, 'task info required')
 
     task_info['uid'] = -1
     task_info = schemas.Task(**task_info)

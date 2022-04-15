@@ -1,4 +1,6 @@
 from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -22,9 +24,10 @@ class Plan(Schema):
 class Task(Schema):
     uid: int
     name: str
+    score: Optional[int]
 
 
 class Estimate(Schema):
     uid: int
-    storypoint: int
     user_id: int
+    storypoint: Optional[int]

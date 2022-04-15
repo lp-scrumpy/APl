@@ -51,8 +51,8 @@ def add_estimates(planning_id: int, task_id: int):
     estimate_info = schemas.Estimate(**estimate_info)
 
     entity = estimate_repo.add_estimate(
-        estimate_info.user_id,
-        estimate_info.storypoint,
+        user_id=estimate_info.user_id,
+        storypoint=estimate_info.storypoint,
         task_id=task_id,
     )
     added_estimate = schemas.Estimate.from_orm(entity)

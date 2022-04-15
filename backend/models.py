@@ -1,14 +1,19 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy.orm import RelationshipProperty, relationship
+
 from backend.db import Base, engine
-from sqlalchemy.orm import relationship
 
 
 class Estimate(Base):
     __tablename__ = 'estimates'
     uid = Column(Integer, primary_key=True)
-    storypoint = Column(String)
+    storypoint = Column(String, nullable=True)
     user_id = Column(Integer, ForeignKey('users.uid'))
     task_id = Column(Integer, ForeignKey('tasks.uid'))
+
+    __tableargs__ = (
+        UniqueConstraint(task_id, user_id),
+    )
 
     def __repr__(self):
         return f'<Estimate {self.uid} {self.meaning} {self.user_id} {self.task_id}>'
@@ -19,7 +24,7 @@ class User(Base):
     uid = Column(Integer, primary_key=True)
     planning_id = Column(Integer, ForeignKey('plannings.uid'))
     name = Column(String)
-    children = relationship("Estimate")
+    children: RelationshipProperty = relationship("Estimate")
 
     __table_args__ = (
         UniqueConstraint(name, planning_id),
@@ -45,12 +50,12 @@ class Planning(Base):
     uid = Column(Integer, primary_key=True)
     name = Column(String)
     date = Column(DateTime)
-    children = relationship('Task')
-    children = relationship('User')
+    tasks: RelationshipProperty = relationship('Task')
+    users: RelationshipProperty = relationship('User')
 
     def __repr__(self):
         return f'<Planning {self.uid} {self.name} {self.date}>'
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     Base.metadata.create_all(bind=engine)
