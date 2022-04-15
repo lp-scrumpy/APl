@@ -18,5 +18,4 @@ class EstimateRepo:
         return new_estimate
 
     def get_all_estimates(self, task_id: int) -> list[Estimate]:
-        estimates = Estimate.query.filter(Estimate.task_id == task_id)
-        return estimates
+        return Estimate.query.filter(Estimate.task_id == task_id)

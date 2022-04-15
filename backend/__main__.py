@@ -1,14 +1,15 @@
 import logging
 from http import HTTPStatus
+
 from flask import Flask
 from pydantic import ValidationError
 from werkzeug.exceptions import HTTPException
 
 from backend.db import db_session
 from backend.errors import AppError
-from backend.views.users import user
 from backend.views.plannings import planning
 from backend.views.tasks import task_view
+from backend.views.users import user
 
 logger = logging.getLogger(__name__)
 

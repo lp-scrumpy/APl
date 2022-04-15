@@ -34,12 +34,11 @@ class TaskRepo:
         return new_task
 
     def get_all_tasks(self, planning_id: int) -> list[Task]:
-        tasks = Task.query.filter(Task.planning_id == planning_id)
-        return tasks
+        return Task.query.filter(Task.planning_id == planning_id)
 
     def get_by_id(self, task_id: int) -> Task:
         task = Task.query.filter(
-            Task.uid == task_id
+            Task.uid == task_id,
         ).first()
         if not task:
             raise NotFoundError(self.name)

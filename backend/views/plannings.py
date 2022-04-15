@@ -50,7 +50,7 @@ def get_plans():
 def add_user(planning_id: int):
     task_info = request.json
     if not task_info:
-        abort(400, 'task info required')
+        abort(HTTPStatus.BAD_REQUEST, 'task info required')
     task_info['uid'] = -1
     task_info = schemas.User(**task_info)
 
@@ -88,7 +88,7 @@ def get_tasks(planning_id):
 def add_task(planning_id: int):
     task_info = request.json
     if not task_info:
-        abort(400, 'task info required')
+        abort(HTTPStatus.BAD_REQUEST, 'task info required')
 
     task_info['uid'] = -1
     task_info = schemas.Task(**task_info)

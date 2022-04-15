@@ -1,6 +1,5 @@
-from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String,
-                        UniqueConstraint)
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy.orm import RelationshipProperty, relationship
 
 from backend.db import Base, engine
 
@@ -25,7 +24,7 @@ class User(Base):
     uid = Column(Integer, primary_key=True)
     planning_id = Column(Integer, ForeignKey('plannings.uid'))
     name = Column(String)
-    children = relationship("Estimate")
+    children: RelationshipProperty = relationship("Estimate")
 
     __table_args__ = (
         UniqueConstraint(name, planning_id),
@@ -51,12 +50,12 @@ class Planning(Base):
     uid = Column(Integer, primary_key=True)
     name = Column(String)
     date = Column(DateTime)
-    children = relationship('Task')
-    children = relationship('User')
+    tasks: RelationshipProperty = relationship('Task')
+    users: RelationshipProperty = relationship('User')
 
     def __repr__(self):
         return f'<Planning {self.uid} {self.name} {self.date}>'
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     Base.metadata.create_all(bind=engine)
