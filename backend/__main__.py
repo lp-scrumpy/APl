@@ -36,9 +36,13 @@ def main():
     app.register_blueprint(user, url_prefix='/api/v1/users')
     app.register_blueprint(planning, url_prefix='/api/v1/plannings')
     app.register_blueprint(task_view, url_prefix='/api/v1/tasks')
-    app.run(host='0.0.0.0', port=8080, debug=False)
+
+    app.register_error_handler(HTTPException, handle_http_exceptions)
+    app.register_error_handler(AppError, handle_app_error)
+    app.register_error_handler(ValidationError, handle_validation_error)
 
     app.teardown_appcontext(shutdown_session)
+    app.run(host='0.0.0.0', port=8080, debug=False)
 
 
 if __name__ == '__main__':
