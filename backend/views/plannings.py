@@ -31,6 +31,14 @@ def new_plan():
     return orjson.dumps(added_plan.dict()), HTTPStatus.CREATED
 
 
+@planning.get('/<int:planning_id>')
+def get_by_id(planning_id: int):
+    entity = plan_repo.get_by_id(planning_id)
+    plan = schemas.Plan.from_orm(entity)
+
+    return orjson.dumps(plan.dict()), HTTPStatus.OK
+
+
 @planning.get('/')
 def get_plans():
     entities = plan_repo.get_all()
