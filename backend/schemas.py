@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class Schema(BaseModel):
@@ -22,9 +23,10 @@ class Plan(Schema):
 class Task(Schema):
     uid: int
     name: str
+    score: Optional[int]
 
 
 class Estimate(Schema):
     uid: int
-    storypoint: int
     user_id: int
+    storypoint: Optional[int]

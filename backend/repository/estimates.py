@@ -8,7 +8,7 @@ from backend.models import Estimate
 class EstimateRepo:
     name = 'estimates'
 
-    def add_estimate(self, user_id: int, storypoint: int, task_id: int) -> Estimate:
+    def add_estimate(self, user_id: int, task_id: int, storypoint: int = None) -> Estimate:
         try:
             new_estimate = Estimate(user_id=user_id, storypoint=storypoint, task_id=task_id)
             db_session.add(new_estimate)
